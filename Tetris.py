@@ -165,3 +165,49 @@ class Tetris:
         self.piece_y = new_y
         self.current = new_piece
         self.piece_shape = new_piece_shap
+
+
+    def step(self, action:ACTION):
+        """
+        走一步
+        :param action: 执行的操作
+        :return:
+        """
+        if self.dead:
+            return
+
+        #横向移动
+        if action in [ACTION.L, ACTION.R, ACTION.L2, ACTION.R2]:
+            self.move_piece((-1 if action in [ACTION.L, ACTION.L2] else 1) * (1 if action in [ACTION.L, ACTION.R] else 2))
+
+        #旋转
+        elif action is ACTION.ROTATE:
+            self.rotate_piece()
+        #交换
+        elif action is ACTION.SWAP:
+            self.swap_piece()
+        #下坠
+        elif action in [ACTION.FAST_FALL, ACTION.INSTANT_FALL]:
+            self.drop_piece(instant=(action is ACTION.INSTANT_FALL))
+
+        self.drop_piece()
+
+
+if __name__ == '__main__':
+    tetris = Tetris()
+
+    while True:
+        if not tetris.dead:
+            utils.print_grid(utils.get_grid_with_piece(tetris.grid, tetris.piece_shape, (tetris.piece_x, tetris.piece_y)))
+
+        # Get user input (q = quit, r = reset)
+        # 0-8 = actions
+        message = input("Next action (0-8): ")
+        if message == "q":
+            break
+        elif message == "r":
+            tetris.reset_game()
+            continue
+
+        # Step
+        tetris.step(ACTION(int(message)))

@@ -2,6 +2,7 @@
 # author: 罗旭维
 # date: 2023-08-12
 
+from enum import Enum
 
 GRID_ROW_COUNT = 20
 GRID_COL_COUNT = 10
@@ -25,6 +26,18 @@ PIECE_SHAPES = {
     "O": [[7, 7],
           [7, 7]]
 }
+
+class ACTION(Enum):
+    NOTHING = 0
+    L = 1
+    R = 2
+    L2 = 3
+    R2 = 4
+    ROTATE = 5
+    SWAP = 6
+    FAST_FALL = 7
+    INSTANT_FALL = 8
+
 
 ########################
 # Score Configurations #
