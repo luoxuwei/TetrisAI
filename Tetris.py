@@ -84,7 +84,7 @@ class Tetris:
         #有完整的行要奖励积分
         self.score += MULTI_SCORE_ALGORITHM(row_completed)
         #产生新的方块
-        self.game_over = self.generate_piece()
+        self.dead = self.generate_piece()
 
 
     ###############################
