@@ -25,3 +25,9 @@ PIECE_SHAPES = {
     "O": [[7, 7],
           [7, 7]]
 }
+
+########################
+# Score Configurations #
+########################
+MULTI_SCORE_ALGORITHM = lambda lines_cleared: 5 ** lines_cleared
+PER_STEP_SCORE_GAIN = 0.001
