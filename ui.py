@@ -8,7 +8,8 @@ import utils
 
 from config import *
 from tetris import Tetris
-
+from agent import GeneticAgent
+SEP = ", "
 screen = None
 
 def init():
@@ -18,7 +19,7 @@ def init():
     pygame.font.init()
     screen = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
 
-def draw(tetris:list[Tetris]):
+def draw(tetris:list[Tetris], agents:list[GeneticAgent], game:Game):
     """
     绘制游戏GUI
     :param screen:
@@ -33,6 +34,59 @@ def draw(tetris:list[Tetris]):
 
         cur_x = PADDING
         cur_y += GAME_HEIGHT + PADDING
+
+    #统计数据展示
+    cur_x, cur_y = GAME_WIDTH * COL_COUNT + PADDING * (COL_COUNT + 1), PADDING #统计数据展示区域的左上角坐标
+    #标题
+    draw_text("Tetris", (cur_x, cur_y), font_szie=48)
+    cur_y += 60
+    #数据
+    best_indexs, best_score = get_high_score(tetris)
+    draw_text(f"High Score: {best_score:.1f}", (cur_x, cur_y))
+    cur_y += 20
+    draw_text(f"Best Agent: {SEP.join(map(str, best_indexs))}", (cur_x, cur_y))
+    cur_y += 20
+
+    #绘制AI代理相关数据
+    if game.gen_generation > -1:
+        cur_y += 20
+        draw_text(f"Generation #{game.gen_generation}", (cur_x, cur_y), font_szie=24) #第几代
+        cur_y += 20
+        draw_text(f"Time Limit: {game.time_elapsed}/{game.time_limit}", (cur_x, cur_y)) #剩余时间
+        cur_y += 20
+
+        survivor = len([a for a in tetris if not a.dead])
+        draw_text(f"Survivors: {survivor}/{GAME_COUNT} ({survivor/GAME_COUNT * 100:.1f}%)", (cur_x, cur_y)) #存活的游戏
+        cur_y += 20
+        draw_text(f"Prev H.Score: {game.gen_previous_best_score:.1f}", (cur_x, cur_y))#上一代最高分
+        cur_y += 20
+        draw_text(f"All Time H.Score: {game.gen_top_score:.1f}", (cur_x, cur_y))#总体最高分
+        cur_y += 40
+
+        #绘制最佳代理的数据
+        agent_index = -1
+        if len(best_indexs) > 0:
+            agent_index = best_indexs[0]
+
+        if agent_index > -1:
+            draw_text(f"Agent #{agent_index}:", (cur_x, cur_y))
+            cur_y += 35
+            draw_text(f">> Agg Height: {agents[agent_index].weight_height:.1f}", (cur_x, cur_y))
+            cur_y += 20
+            draw_text(f">> Hole Count: {agents[agent_index].weight_holes:.1f}", (cur_x, cur_y))
+            cur_y += 20
+            draw_text(f">> Bumpiness:  {agents[agent_index].weight_bumpiness:.1f}", (cur_x, cur_y))
+            cur_y += 20
+            draw_text(f">> Line Clear: {agents[agent_index].weight_line_completed:.1f}", (cur_x, cur_y))
+            cur_y += 20
+
+
+
+
+
+
+
+
     pygame.display.update()
 
 
@@ -89,3 +143,27 @@ def draw_piece(screen, matrix, offsets=(0, 0), global_offsets=(0, 0)):
                                  (coord_x + offset, coord_y + 3*offset)),)
 
 
+
+def draw_text(text, offsets, font_szie = 16, color=COLORS.WHITE):
+    text_image = pygame.font.SysFont(FONT_NAME, font_szie).render(text, False, color.value)
+    screen.blit(text_image, offsets)
+
+def get_high_score(tetris:list[Tetris]):
+    """
+    获取分数最高的游戏，如果有并列第一的一起放入列表
+    :param tetris:
+    :return:
+    """
+    best_indexes, best_score = [], 0
+    for a in range(GAME_COUNT):
+        # Ignore dead games
+        if tetris[a].dead:
+            continue
+        # Get score
+        score = tetris[a].score
+        if score > best_score:
+            best_indexes = [a]
+            best_score = score
+        elif score == best_score:#并列第一的
+            best_indexes.append(a)
+    return best_indexes, best_score

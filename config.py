@@ -64,6 +64,14 @@ class ACTION(Enum):
     FAST_FALL = 7
     INSTANT_FALL = 8
 
+class Game:
+    def __init__(self, gen_generation, time_elapsed, time_limit, gen_previous_best_score, gen_top_score):
+        self.gen_generation = gen_generation
+        self.time_elapsed = time_elapsed
+        self.time_limit = time_limit
+        self.gen_previous_best_score = gen_previous_best_score
+        self.gen_top_score = gen_top_score
+
 
 ########################
 # Score Configurations #

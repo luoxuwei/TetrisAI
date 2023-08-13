@@ -54,7 +54,7 @@ def update():
             continue
         TETRISTS[i].step(AGENTS[i].get_action(TETRISTS[i]))
 
-    ui.draw(TETRISTS)
+    ui.draw(TETRISTS, AGENTS, Game(gen_generation, time_elapsed, time_limit, gen_previous_best_score, gen_top_score))
 
 
 
