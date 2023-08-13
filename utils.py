@@ -129,3 +129,6 @@ def random_weight():
 
 def get_finish_grid_with_piece(grid, piece, offsets, flattened=False):
     return get_grid_with_piece(grid, piece, (offsets[0], get_effective_height(grid, piece, offsets)), flattened)
+
+
+

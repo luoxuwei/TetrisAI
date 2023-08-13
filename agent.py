@@ -44,7 +44,7 @@ class RandomAgent(BaseAgent):
 
 class GeneticAgent(BaseAgent):
     def __init__(self):
-        super.__init__()
+        super().__init__()
         self.weight_height = random.random() #盘面累积的高度，盘面累积的方块越高越接近死亡
         self.weight_holes = random.random() #盘面里的孔洞，孔洞越多盘面越糟糕
         self.weight_bumpiness = random.random() #盘面里累积的方块的平滑度，凹凸不平落差大的盘面很糟糕
