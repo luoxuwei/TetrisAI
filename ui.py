@@ -80,6 +80,16 @@ def draw(tetris:list[Tetris], agents:list[GeneticAgent], game:Game):
             draw_text(f">> Line Clear: {agents[agent_index].weight_line_completed:.1f}", (cur_x, cur_y))
             cur_y += 20
 
+    #绘制高亮框
+    #鼠标所在游戏
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    grid_x,grid_y = mouse_x // (GAME_WIDTH + PADDING), mouse_y // (GAME_HEIGHT + PADDING)
+    if grid_y < ROW_COUNT and grid_x < COL_COUNT:
+        highlight((grid_x, grid_y), COLORS.HIGHLIGHT_RED)
+
+    #最佳代理的高亮
+    if len(best_indexs) > 0:
+        highlight((best_indexs[0]%COL_COUNT, best_indexs[0]//COL_COUNT), COLORS.HIGHLIGHT_GREEN)
 
 
 
@@ -147,6 +157,23 @@ def draw_piece(screen, matrix, offsets=(0, 0), global_offsets=(0, 0)):
 def draw_text(text, offsets, font_szie = 16, color=COLORS.WHITE):
     text_image = pygame.font.SysFont(FONT_NAME, font_szie).render(text, False, color.value)
     screen.blit(text_image, offsets)
+
+def highlight(offsets, color:COLORS):
+    """
+    绘制高亮框
+    :param offsets:第几个游戏
+    :param color:线条的颜色
+    :return:
+    """
+    # 高亮线宽设置为PADDING/2
+    x = (GAME_WIDTH + PADDING) * offsets[0] + PADDING / 2
+    y = (GAME_HEIGHT + PADDING) * offsets[1] + PADDING / 2
+
+    pygame.draw.rect(screen, color.value, (x, y, GAME_WIDTH + PADDING, PADDING / 2)) #上面的横线
+    pygame.draw.rect(screen, color.value, (x, y, PADDING/2, GAME_HEIGHT + PADDING)) #左边的竖线
+    pygame.draw.rect(screen, color.value, (x, y + GAME_HEIGHT + PADDING/2 , GAME_WIDTH + PADDING, PADDING / 2)) #下面的横线
+    pygame.draw.rect(screen, color.value, (x + GAME_WIDTH + PADDING / 2, y, PADDING / 2, GAME_HEIGHT + PADDING)) #右边的竖线
+
 
 def get_high_score(tetris:list[Tetris]):
     """
