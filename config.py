@@ -13,8 +13,7 @@ GRID_COL_COUNT = 10
 ROW_COUNT = 4
 COL_COUNT = 10
 GAME_COUNT = ROW_COUNT * COL_COUNT #固定逻辑不要修改
-AGENTS = []
-TETRISTS = []
+
 
 #每个俄罗斯游戏显示的区域尺寸
 GAME_WIDTH = 100

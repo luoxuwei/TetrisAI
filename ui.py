@@ -9,7 +9,16 @@ import utils
 from config import *
 from tetris import Tetris
 
-def draw(screen):
+screen = None
+
+def init():
+    global screen
+    #init pygam
+    pygame.init()
+    pygame.font.init()
+    screen = pygame.display.set_mode(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+def draw(tetris:list[Tetris]):
     """
     绘制游戏GUI
     :param screen:
@@ -19,7 +28,7 @@ def draw(screen):
     cur_x,cur_y = PADDING,PADDING
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):
-            draw_grid(screen, TETRISTS[y*COL_COUNT + x], cur_x, cur_y)
+            draw_grid(screen, tetris[y*COL_COUNT + x], cur_x, cur_y)
             cur_x += GAME_WIDTH + PADDING
 
         cur_x = PADDING
@@ -46,7 +55,7 @@ def draw_grid(screen, tetris:Tetris, x, y):
         #画字，居中
         message = "GAME OVER"
         color = COLORS.RED
-        text_image = pygame.font.SysFont(FONT_NAME, GAME_HEIGHT//6).render(message, False, color.value)
+        text_image = pygame.font.SysFont(FONT_NAME, GAME_WIDTH//6).render(message, False, color.value)
         text_rect = text_image.get_rect()
         screen.blit(text_image, (x + GAME_WIDTH/2 - text_rect.width/2, y + GAME_HEIGHT/2 - text_rect.height/2))
 

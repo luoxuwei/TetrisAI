@@ -123,7 +123,7 @@ class GeneticAgent(BaseAgent):
         score += self.weight_line_completed * completed_lines
         return score
 
-    def cross_over(self, other):
+    def cross_cover(self, other):
         """
         两个agent配对，产生下一代
         就是四个权重，随机从父母一方继承
