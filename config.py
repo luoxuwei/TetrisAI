@@ -7,6 +7,9 @@ from enum import Enum
 GRID_ROW_COUNT = 20
 GRID_COL_COUNT = 10
 
+# Mutation Rate
+MUTATION_RATE = 0.1  # 10% mutation chance
+
 ######################
 # Piece Configuration #
 ######################
