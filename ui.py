@@ -84,7 +84,7 @@ def draw(tetris:list[Tetris], agents:list[GeneticAgent], game:Game):
     #鼠标所在游戏
     mouse_x, mouse_y = pygame.mouse.get_pos()
     grid_x,grid_y = mouse_x // (GAME_WIDTH + PADDING), mouse_y // (GAME_HEIGHT + PADDING)
-    if grid_y < ROW_COUNT and grid_x < COL_COUNT:
+    if mouse_x > 0 and mouse_y > 0 and mouse_y < SCREEN_HEIGHT and grid_y < ROW_COUNT and grid_x < COL_COUNT:
         highlight((grid_x, grid_y), COLORS.HIGHLIGHT_RED)
 
     #最佳代理的高亮
