@@ -72,7 +72,7 @@ class GeneticAgent(BaseAgent):
             # 遍历旋转次数，0-3，第4次就回到最初的状态了
             for rotation_times in range(0, 4):
                 #遍历横向所有位置（0~GRID_COL_COUNT - len(piece[0])）
-                for x in (0, GRID_COL_COUNT - len(piece[0])):
+                for x in range(0, GRID_COL_COUNT - len(piece[0]) + 1):
                     #获取方块落到最底部时的盘面
                     new_grid = utils.get_finish_grid_with_piece(grid, piece, (x, offsets[1]), True)
                     fitness = self.get_fitness(new_grid)
